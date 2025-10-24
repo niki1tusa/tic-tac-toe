@@ -2,9 +2,9 @@ import { AnimatePresence, motion } from 'motion/react';
 import { useEffect, useState } from 'react';
 
 import Bar from './Bar';
+import Modal from './Modal';
 import Title from './Title';
 
-// TODO: победа по диагонали
 function App() {
 	const [cellCondition, setCellCondition] = useState(
 		Array.from({ length: 3 }, () => Array.from({ length: 3 }, () => ''))
@@ -55,7 +55,7 @@ function App() {
 			return prev.map(item => item.map(() => ''));
 		});
 		setPlayer('x');
-		// TODO: setCurrentStep - срабытывает два раза!
+		//  setCurrentStep - срабытывает два раза!
 		setCurrentStep(1);
 		setGameResult(null);
 	};
@@ -74,15 +74,8 @@ function App() {
 			{/* tools */}
 			<Bar handleRestartGame={handleRestartGame} player={player} currentStep={currentStep} />
 			{/* result */}
-			<b>
-				{currentStep > 5 && gameResult
-					? gameResult === 'draw'
-						? 'Game is a draw'
-						: gameResult === 'x'
-							? 'Game win is "x" player!'
-							: 'Game win is "o" player!'
-					: ''}
-			</b>
+			{currentStep > 5 && gameResult && <Modal gameResult={gameResult} />}
+
 			{/* cells */}
 			<div className='flex border'>
 				{cellCondition.map((rows, i) => (
