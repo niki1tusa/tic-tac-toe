@@ -1,73 +1,81 @@
-# React + TypeScript + Vite
+# TicTacToe
+A minimalist Tic‑Tac‑Toe game with state management and a clean UI.
+![React](https://img.shields.io/badge/React-18-blue) ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6) ![Zustand](https://img.shields.io/badge/State-Zustand-4B5563) ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3-38BDF8)
+## ✨ Features
+- ⚡ Instant gameplay with responsive grid interactions
+- 🧠 Simple, reliable state management with Zustand
+- 🎯 Win & draw detection, turn indicator, and restart flow
+- 🧩 Clean, componentized architecture
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 🗂️ Project Structure (excerpt)
+- `./` — 
+- `tic-tac-toe-main/` — .gitignore, .prettierrc, README.md, eslint.config.js, index.html, package.json, pnpm-lock.yaml, tsconfig.app.json, tsconfig.json, tsconfig.node.json, vite.config.ts
+- `tic-tac-toe-main/src/` — App.tsx, index.css, main.tsx
+- `tic-tac-toe-main/src/components/` — Bar.tsx, ListHistoryGame.tsx, Modal.tsx, TextWinner.tsx, Title.tsx
+- `tic-tac-toe-main/src/hooks/` — useGameLogic.ts
+- `tic-tac-toe-main/src/store/` — store.ts
+- `tic-tac-toe-main/src/types/` — global.types.ts
 
-Currently, two official plugins are available:
+## 🚀 Getting Started
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Prerequisites
+- Node.js 18+
+- npm (or pnpm/yarn)
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Setup
+```bash
+git clone <your-fork-url>
+cd tic-tac-toe
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Build
+```bash
+npm run build
 ```
+### Lint
+```bash
+npm run lint
+```
+## 🧩 Tech Stack
+- React, TypeScript, Zustand, Tailwind CSS, lucide-react
+- Zustand for state management
+- (Optional) Tailwind CSS & lucide-react for UI
+
+## 📦 Scripts
+- `dev` — `vite`
+- `build` — `tsc -b && vite build`
+- `lint` — `eslint .`
+- `preview` — `vite preview`
+
+## 🔌 Example: Using the History Store
+```tsx
+import { useHistoryStore } from '@/store/store';
+
+const add = useHistoryStore(s => s.addGameResult);
+add('x'); // store last winner
+```
+
+## 🧠 Game Logic Highlights
+- Immutable updates for the grid
+- Winner detection (rows, columns, diagonals)
+- Draw detection when the board is full
+- History log of match results (last 10 shown)
+
+## 🧪 Ideas to Improve
+- Add CPU opponent (minimax with depth limit)
+- Add score board and session persistence (localStorage)
+- Add animations and sound feedback
+- Extend to NxN boards and custom win-length
+- Add Play Again modal & shareable match link
+
+## 📸 Screenshots
+_Add a few GIFs or images here (gameplay, win/draw states)._
+
+## 🛡️ License
+MIT — feel free to fork and build on it.
+
+---
+
+Built with ❤️ and a love for tiny games.
