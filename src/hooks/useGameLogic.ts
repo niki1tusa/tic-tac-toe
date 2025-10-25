@@ -1,9 +1,12 @@
 import { useMemo, useState } from 'react';
 
+import { useHistoryStore } from '../store/store';
+
 export const useGameLogic = () => {
 	const [cellCondition, setCellCondition] = useState(
 		Array.from({ length: 3 }, () => Array.from({ length: 3 }, () => ''))
 	);
+	const addGameResult = useHistoryStore(s => s.addGameResult);
 	const doneSteps = useMemo(() => cellCondition.flat().filter(Boolean).length, [cellCondition]);
 	const [player, setPlayer] = useState<'x' | 'o'>('x');
 	const [gameResult, setGameResult] = useState<null | 'draw' | 'x' | 'o'>(null);
@@ -23,18 +26,22 @@ export const useGameLogic = () => {
 		// condition win
 		if (instance.flat().every(cell => cell !== '')) {
 			setGameResult('draw');
+			addGameResult('draw');
 		}
 		if (instance[i].every(item => item === player)) {
 			setGameResult(player);
+			addGameResult(player);
 		}
 		if (instance[0][j] === player && instance[1][j] === player && instance[2][j] === player) {
 			setGameResult(player);
+			addGameResult(player);
 		}
 		if (
 			(instance[0][0] === player && instance[1][1] === player && instance[2][2] === player) ||
 			(instance[2][0] === player && instance[1][1] === player && instance[0][2] === player)
 		) {
 			setGameResult(player);
+			addGameResult(player)
 		}
 		setPlayer(player === 'x' ? 'o' : 'x');
 		setCellCondition(instance);

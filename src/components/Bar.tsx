@@ -2,6 +2,7 @@ import { BookOpen, Circle, RotateCw, SquareX, X } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useState } from 'react';
 
+import ListHistoryGame from './ListHistoryGame';
 import Modal from './Modal';
 
 interface Props {
@@ -11,12 +12,13 @@ interface Props {
 }
 export default function Bar({ handleRestartGame, player, doneSteps }: Props) {
 	const [isShowRules, setIsShowRules] = useState<boolean>(false);
+	const [isShowHistory, setIsShowHistory] = useState<boolean>(false);
 	return (
 		<>
 			<AnimatePresence>
 				{isShowRules && (
 					<Modal>
-						<div className='p-3 flex flex-col gap-3'>
+						<div className='flex flex-col gap-3 p-3'>
 							<div className='flex w-full items-center justify-between text-2xl'>
 								Rules game: <SquareX onClick={() => setIsShowRules(false)} color='red' />
 							</div>
@@ -26,6 +28,13 @@ export default function Bar({ handleRestartGame, player, doneSteps }: Props) {
 								<li>3. It can be collected horizontally, vertically and diagonally.</li>
 							</ul>
 						</div>
+					</Modal>
+				)}
+			</AnimatePresence>
+			<AnimatePresence>
+				{isShowHistory && (
+					<Modal>
+						<ListHistoryGame setIsShow={setIsShowHistory}/>
 					</Modal>
 				)}
 			</AnimatePresence>
@@ -63,6 +72,7 @@ export default function Bar({ handleRestartGame, player, doneSteps }: Props) {
 					whileTap={{ scale: 0.8 }}
 					transition={{ type: 'spring', stiffness: 400, damping: 25 }}
 					type='button'
+					onClick={() => setIsShowHistory(true)}
 					className='flex items-center gap-2 rounded p-2 shadow shadow-neutral-400 transition-colors hover:bg-gray-100'
 				>
 					History <BookOpen size={28} />
