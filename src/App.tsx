@@ -1,81 +1,41 @@
 import { AnimatePresence, motion } from 'motion/react';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
-import Bar from './Bar';
-import Modal from './Modal';
-import Title from './Title';
+import Bar from './components/Bar';
+import Modal from './components/Modal';
+import Title from './components/Title';
+import { useGameLogic } from './hooks/useGameLogic';
 
 function App() {
-	const [cellCondition, setCellCondition] = useState(
-		Array.from({ length: 3 }, () => Array.from({ length: 3 }, () => ''))
-	);
-	const [player, setPlayer] = useState<'x' | 'o'>('x');
-	const [currentStep, setCurrentStep] = useState<number>(1);
-	const [gameResult, setGameResult] = useState<null | 'draw' | 'x' | 'o'>(null);
-	const handleClick = (i: number, j: number) => {
-		setCellCondition(prev => {
-			const instance = prev.map(item => [...item]);
-			console.log(instance[i]);
-			// step
-			if (!instance[i][j]) {
-				if (player === 'o') {
-					instance[i][j] = 'o';
-				} else {
-					instance[i][j] = 'x';
-				}
-			}
-			// condition win
-			if (currentStep === 9 && instance.flat().every(cell => cell !== '')) {
-				setGameResult('draw');
-			}
-			if (instance[i].every(item => item === 'x')) {
-				setGameResult(player);
-			}
-			if (
-				i > 0 &&
-				instance[0][j] === player &&
-				instance[1][j] === player &&
-				instance[2][j] === player
-			) {
-				setGameResult(player);
-			}
-			if (
-				(instance[0][0] === player && instance[1][1] === player && instance[2][2] === player) ||
-				(instance[2][0] === player && instance[1][1] === player && instance[0][2] === player)
-			) {
-				setGameResult(player);
-			}
-			setPlayer(player === 'x' ? 'o' : 'x');
-			setCurrentStep(prev => prev + 1);
-			return instance;
-		});
-	};
-	const handleRestartGame = () => {
-		setCellCondition(prev => {
-			return prev.map(item => item.map(() => ''));
-		});
-		setPlayer('x');
-		//  setCurrentStep - срабытывает два раза!
-		setCurrentStep(1);
-		setGameResult(null);
-	};
+	const { player, doneSteps, cellCondition, gameResult, handleClick, handleRestartGame } =
+		useGameLogic();
 
-	// reset game setting before result
 	useEffect(() => {
 		if (!gameResult) return;
 		const timer = setTimeout(() => {
 			handleRestartGame();
-		}, 3000);
+		}, 2000);
 		return () => clearTimeout(timer);
-	}, [gameResult]);
+	}, [gameResult, handleRestartGame]);
 	return (
 		<div className='flex h-screen w-full flex-col items-center justify-center gap-3'>
 			<Title>Tic Tac Toe</Title>
 			{/* tools */}
-			<Bar handleRestartGame={handleRestartGame} player={player} currentStep={currentStep} />
+			<Bar handleRestartGame={handleRestartGame} player={player} doneSteps={doneSteps} />
 			{/* result */}
-			{currentStep > 5 && gameResult && <Modal gameResult={gameResult} />}
-
+			<AnimatePresence>
+				{gameResult && (
+					<Modal>
+						<b>
+							{gameResult === 'draw'
+								? 'Game is a draw'
+								: gameResult === 'x'
+									? 'Game win is "x" player!'
+									: 'Game win is "o" player!'}
+						</b>
+					</Modal>
+				)}
+			</AnimatePresence>
 			{/* cells */}
 			<div className='flex border'>
 				{cellCondition.map((rows, i) => (
