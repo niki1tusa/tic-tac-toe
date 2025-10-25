@@ -1,0 +1,1 @@
+export type TResult = 'draw' | 'o' | 'x'
